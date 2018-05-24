@@ -34,18 +34,28 @@ class App extends React.Component {
 		
 		
 		if(city){
-			const city_id = city_list[findIndex(city_list, city)].id;
-			// console.log(city_id);
-			const api_call = await fetch(`http://api.openweathermap.org/data/2.5/forecast?id=${city_id}&APPID=${API_KEY}`);
-			const data = await api_call.json();
-			// console.log(data);
-			this.setState({
-				temperature: data.list[0].main.temp,
-				country: data.city.country,
-				humidity: data.list[0].main.humidity,
-				description: data.list[0].weather[0].description,
-				error: ""
-			})
+			if(findIndex(city_list, city) !== -1){
+				const city_id = city_list[findIndex(city_list, city)].id;
+				// console.log(city_id);
+				const api_call = await fetch(`http://api.openweathermap.org/data/2.5/forecast?id=${city_id}&APPID=${API_KEY}`);
+				const data = await api_call.json();
+				// console.log(data);
+				this.setState({
+					temperature: data.list[0].main.temp,
+					country: data.city.country,
+					humidity: data.list[0].main.humidity,
+					description: data.list[0].weather[0].description,
+					error: ""
+				})
+			}else {
+				this.setState({
+					temperature: undefined,
+					country: undefined,
+					humidity: undefined,
+					description: undefined,
+					error: "The city is not exist!"
+				})
+			}
 		}else {
 			this.setState({
 				temperature: undefined,
